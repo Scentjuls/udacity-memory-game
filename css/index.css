@@ -1,0 +1,83 @@
+body {
+    background: #ffffff url('../img/geometry2.png');
+    font-family: 'Coda', cursive;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    text-transform: capitalize;
+}
+
+.scores {
+    text-align: left;
+    width: 345px;
+    margin-bottom: 10px;
+}
+
+.scores .stars {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+.scores .stars li {
+    list-style: none;
+    display: inline-block;
+}
+
+.scores .restart {
+    float: right;
+    cursor: pointer;
+}
+
+.decks {
+    background: linear-gradient(160deg, #03D3B9, #B26ACC);
+    width: 660px;
+    height: 680px;
+    border-radius: 10px;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 3em;
+    padding: 30px;
+}
+
+.card {
+    height: 125px;
+    width: 125px;
+    background: #2e3d49;
+    font-size: 0;
+    color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+.open {
+    transform: rotateY(0);
+    background: #02b3e4;
+    cursor: default;
+    font-size: 33px;
+}
+
+.show {
+    font-size: 33px;
+}
+
+.match {
+    cursor: default;
+    background: #02ccba;
+    font-size: 33px;
+}
