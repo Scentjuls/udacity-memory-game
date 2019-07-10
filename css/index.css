@@ -25,6 +25,7 @@ body {
     padding: 0;
     display: inline-block;
     margin: 0 5px 0 0;
+    color: yellow;
 }
 
 .scores .stars li {
@@ -80,4 +81,8 @@ body {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+}
+
+.empty-star {
+    color: white;
 }
