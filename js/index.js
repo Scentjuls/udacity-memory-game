@@ -2,10 +2,10 @@
  * Create a list that holds all of your cards
  */
 
-const cards = ['fa fa-diamond', ' fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt',
+let cards = ['fa fa-anchor', 'fa fa-anchor', 'fa fa-anchor', 'fa fa-bolt',
  'fa fa-cube', 'fa fa-anchor', 'fa fa-leaf', 'fa fa-bicycle', 
- 'fa fa-diamond', 'fa fa-bomb', 'fa fa-leaf', 'fa fa-bomb', 
- 'fa fa-bolt', 'fa fa-bicycle', 'fa fa-paper-plane-o', 'fa fa-cube'];
+ 'fa fa-bolt', 'fa fa-bomb', 'fa fa-leaf', 'fa fa-bomb', 
+ 'fa fa-bolt', 'fa fa-bicycle', 'fa fa-bolt', 'fa fa-cube'];
 
 /*
  * Display the cards on the page
@@ -43,7 +43,7 @@ let stars = document.querySelectorAll('.star');
 
 
 const choi = [].slice.call(decks.children);
-console.log('choi', choi)
+// console.log('choi', choi)
 let openedCards = [];
 
 //game status 
@@ -70,16 +70,10 @@ let rating = 3;
 // click event listener to reset the game 
 restartButton.addEventListener('click', restartGame);
 
-
-//click event listener for the card
-
-decks.addEventListener('click', openCard);
-
-
 //GAME LOGIC HERE 
 
 
-restartGame()
+// restartGame()
 
 //functions
 
@@ -96,6 +90,8 @@ function restartGame() {
     
     stopTimer();
     resetsMoves();
+    resetCards();
+
 }
 
 function openCard(e) {
@@ -103,14 +99,14 @@ function openCard(e) {
     //increase the move of the card
     startTimer();
     let target = e.target;
-    console.log('target', target)
+    // console.log('target', target)
    const parent = target.parentElement;
-   console.log('parent', parent)
-   console.log('classlist', parent.classList.contains('card'))
+//    console.log('parent', parent)
+//    console.log('classlist', parent.classList.contains('card'))
    if (parent.classList.contains('card')) {
     target = parent;
 }
-console.log('open', openedCards.includes(target))
+// console.log('open', openedCards.includes(target))
 
 if (!openedCards.includes(target)) {
     target.classList.add('open', 'show');
@@ -210,3 +206,32 @@ function removeClassByPrefix(el, prefix, replace = '') {
 function checkMatchedCards() {
 
 } 
+
+//create the  cards on the body
+for (let i =0; i < cards.length; i++) {
+    let list = document.createElement('li');
+    let card = document.createElement('i');
+    list.className = "card";
+    card.className= cards[i];
+    list.appendChild(card);
+    list.addEventListener('click', openCard); //click event listener on the card befor appending to the parent
+    decks.appendChild(list)
+}
+
+function resetCards() {
+    //clear the opened cards array 
+    //shuffle the cards
+    //iterate over the cards and then remove the class from list items 
+    openedCards = [];
+    cards = shuffle(cards);
+    cards.forEach((card, index) => {
+        //remove the classes from the already opened cards
+        // card.classList.remove('match', 'open', 'show');
+        console.log('cards', index)
+        // removeClassByPrefix(card.children[0], 'fa-');
+
+        // Attach new symbols to cards
+        // const symbol = `fa-${cardSymbols[index]}`;
+        // card.children[0].classList.add(symbol);
+    });    
+}
