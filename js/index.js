@@ -29,6 +29,7 @@ function shuffle(cards) {
     return cards;
 }
 
+
 // list of all variables
 let moves = 0;
 let starRating = document.querySelectorAll('.stars');
@@ -40,11 +41,18 @@ let timeSeconds = document.querySelector('.seconds');
 let restartButton = document.querySelector('.fa-redo-alt');
 let decks = document.querySelector('.decks');
 let stars = document.querySelectorAll('.star');
-
-
+let modalHours = document.querySelector('.modal-hours');
+let modalMinutes = document.querySelector('.modal-minutes');
+let modalSeconds = document.querySelector('.modal-seconds');
+let modalMoves = document.querySelector('.modal-moves-count');
+let modalRatings = document.querySelector('.modal-rating');
+let modal = document.querySelector('#modal');
+let closeModal = document.querySelector('.modal-close-btn');
+let restartModal = document.querySelector('.modal-replay-btn');
 const choi = [].slice.call(decks.children);
 // console.log('choi', choi)
 let openedCards = [];
+let matchedCards = [];
 
 //game status 
 let startGame = false;
@@ -54,6 +62,22 @@ let seconds = 0;
 let timeTaken = 0;
 let timer = undefined;
 let rating = 3;
+let match = 0;
+
+//create the  cards on the body
+for (let i =0; i < cards.length; i++) {
+    let list = document.createElement('li');
+    let card = document.createElement('i');
+    list.className = "card";
+    card.className= cards[i];
+    list.appendChild(card);
+   
+    list.addEventListener('click', openCard); //click event listener on the card befor appending to the parent
+    decks.appendChild(list)
+}
+
+const listOfCards = [].slice.call(decks.children);
+console.log('listr', listOfCards)
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -70,6 +94,11 @@ let rating = 3;
 // click event listener to reset the game 
 restartButton.addEventListener('click', restartGame);
 
+//click event listener to close the modal
+closeModal.addEventListener('click', closedModal);
+
+//click event to restart the game 
+restartModal.addEventListener('click', restartGame)
 //GAME LOGIC HERE 
 
 
@@ -87,7 +116,7 @@ function restartGame() {
     //set the timmer back to zero
     // unshuffle the cards back to normal
     
-    
+    closedModal();
     stopTimer();
     resetsMoves();
     resetCards();
@@ -99,28 +128,18 @@ function openCard(e) {
     //increase the move of the card
     startTimer();
     let target = e.target;
-    // console.log('target', target)
    const parent = target.parentElement;
-//    console.log('parent', parent)
-//    console.log('classlist', parent.classList.contains('card'))
    if (parent.classList.contains('card')) {
     target = parent;
 }
-// console.log('open', openedCards.includes(target))
 
 if (!openedCards.includes(target)) {
     target.classList.add('open', 'show');
     openedCards.push(target);
-    // checkMatchedCards();
+    checkMatchedCards();
 }
     increaseMove();
 }
-
-// function timer() {
-//   if (seconds = 0) {
-//      seconds++
-//   }
-// }
 
 function startTimer() {
     //when the card is clicked the timer should start immediately
@@ -168,8 +187,10 @@ function resetsMoves() {
     //reset time
     //reset stars
     //resets moves
+    //resets matches 
     // rating = 3;
     moves = 0;
+    match = 0;
     // stars.forEach(star => removeClassByPrefix(star, 'empty-star'));
     moveCount.innerText = moves;
     stars.forEach(star => {
@@ -185,7 +206,7 @@ function resetsMoves() {
 }
 
 function ratingStars() {
-    if (moves === 3) {
+    if (moves === 18) {
         rating--;
         stars[2].classList.add('empty-star');
     } else if (moves === 26) {
@@ -204,34 +225,86 @@ function removeClassByPrefix(el, prefix, replace = '') {
 }
 
 function checkMatchedCards() {
+    //get the length of the cards 
+    //check if length is equalo to 2 
+    //get the opened cards in variables 
+    //check if the class names are equal, if they are run cardMatched, if not run cardClosed
 
+    let cardLength = openedCards.length;
+    if(cardLength === 2){
+        let firstCard = openedCards[0];
+        let secondCard = openedCards[1]; 
+        let firstClassName = firstCard.children[0].classList.toString();
+        let secondClassName = secondCard.children[0].classList.toString();
+if (firstClassName === secondClassName ){
+    increaseMatch();
+    cardMatched(firstCard);
+    cardMatched(secondCard);
+} else  {
+    notMatched(firstCard);
+    notMatched(secondCard);
+}
+openedCards = [];
+gameWon();
+}
 } 
 
-//create the  cards on the body
-for (let i =0; i < cards.length; i++) {
-    let list = document.createElement('li');
-    let card = document.createElement('i');
-    list.className = "card";
-    card.className= cards[i];
-    list.appendChild(card);
-    list.addEventListener('click', openCard); //click event listener on the card befor appending to the parent
-    decks.appendChild(list)
+function gameWon() {
+    if (match === 8){
+        stopTimer();
+        showModal();
+    }
 }
+function notMatched(card) {
+    // card should show red
+    setTimeout(() => {
+        card.classList.remove('open', 'show');
+    }, 500)
+    //  card.classList.add('non-matching-icons');
+}
+
+function increaseMatch() {
+    match++;
+}
+function cardMatched(card) {
+    //cards should flip
+    //cards should show green 
+card.classList.add('matching-icons');
+document.getElementsByClassName('matching-icons').disabled = true;
+
+}
+
+function showModal() {
+
+    modalHours.textContent = hours > 0 ? `${hours} hours, ` : '';
+    modalMinutes.textContent = minutes > 0 ? `${minutes} minutes, ` : '';
+    modalSeconds.textContent = `${seconds} seconds`;
+    modalMoves.textContent = `${moves} moves`;
+    modalRatings.textContent = rating;
+    modal.style.display = 'block';
+}
+
+function closedModal() {
+    modal.style.display = 'none';
+} 
 
 function resetCards() {
     //clear the opened cards array 
     //shuffle the cards
     //iterate over the cards and then remove the class from list items 
     openedCards = [];
+    matchedCards = [];
     cards = shuffle(cards);
-    cards.forEach((card, index) => {
-        //remove the classes from the already opened cards
-        // card.classList.remove('match', 'open', 'show');
-        console.log('cards', index)
-        // removeClassByPrefix(card.children[0], 'fa-');
+    listOfCards.forEach((listOfCard, index) => {
+        console.log('listOfCard', listOfCard)
+        // remove the classes from the already opened cards
+        listOfCard.classList.remove('open', 'show', 'matching-icons');
+        // Remove symbols
+        removeClassByPrefix(listOfCard.children[0], '');
 
-        // Attach new symbols to cards
-        // const symbol = `fa-${cardSymbols[index]}`;
-        // card.children[0].classList.add(symbol);
+        // Attach new icons to cards
+        const icon = `${cards[index]}`;
+        console.log('icon', icon)
+        listOfCard.children[0].classList.add(icon);
     });    
 }

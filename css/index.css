@@ -86,3 +86,17 @@ body {
 .empty-star {
     color: white;
 }
+
+.matching-icons {
+    transform: rotateY(0);
+    background:green;
+    cursor: default;
+    font-size: 33px;
+}
+
+.non-matching-icons {
+    transform: rotateY(0);
+    background: red;
+    cursor: default;
+    font-size: 33px;
+}
