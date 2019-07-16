@@ -68,7 +68,6 @@ for (let i =0; i < cards.length; i++) {
     let list = document.querySelector('.card');
     let card = document.querySelector('.fa');
     card.className= `fa ${cards[i]}`;
-    console.log('card1', card)
     list.appendChild(card);
    
     list.addEventListener('click', openCard); //click event listener on the card befor appending to the parent
@@ -279,10 +278,10 @@ function showModal() {
     modalHours.textContent = hours > 0 ? `${hours} hours, ` : '';
     
     modalMinutes.textContent = minutes > 0 ? `${minutes} minutes, ` : '';
-    modalSeconds.textContent = `${seconds} seconds`;
-    modalMoves.textContent = `${moves} moves`;
+    modalSeconds.textContent = seconds;
+    modalMoves.textContent = moves;
     modalRatings.textContent = rating;
-    // console.log('sec', seconds, minutes, hours)
+    console.log('secondas', seconds)
     modal.style.display = 'block';
 }
 
