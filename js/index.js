@@ -2,10 +2,10 @@
  * Create a list that holds all of your cards
  */
 
-let cards = ['fa fa-anchor', 'fa fa-anchor', 'fa fa-anchor', 'fa fa-bolt',
- 'fa fa-cube', 'fa fa-anchor', 'fa fa-leaf', 'fa fa-bicycle', 
- 'fa fa-bolt', 'fa fa-bomb', 'fa fa-leaf', 'fa fa-bomb', 
- 'fa fa-bolt', 'fa fa-bicycle', 'fa fa-bolt', 'fa fa-cube'];
+let cards = ['fa-anchor', 'fa-anchor', 'fa-anchor', 'fa-bolt',
+ 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 
+ 'fa-bolt', 'fa-bomb', 'fa-leaf', 'fa-bomb', 
+ 'fa-bolt', 'fa-bicycle', 'fa-bolt', 'fa-cube'];
 
 /*
  * Display the cards on the page
@@ -49,8 +49,7 @@ let modalRatings = document.querySelector('.modal-rating');
 let modal = document.querySelector('#modal');
 let closeModal = document.querySelector('.modal-close-btn');
 let restartModal = document.querySelector('.modal-replay-btn');
-const choi = [].slice.call(decks.children);
-// console.log('choi', choi)
+
 let openedCards = [];
 let matchedCards = [];
 
@@ -64,20 +63,20 @@ let timer = undefined;
 let rating = 3;
 let match = 0;
 
-//create the  cards on the body
+// create the  cards on the body
 for (let i =0; i < cards.length; i++) {
-    let list = document.createElement('li');
-    let card = document.createElement('i');
-    list.className = "card";
-    card.className= cards[i];
+    let list = document.querySelector('.card');
+    let card = document.querySelector('.fa');
+    card.className= `fa ${cards[i]}`;
+    console.log('card1', card)
     list.appendChild(card);
    
     list.addEventListener('click', openCard); //click event listener on the card befor appending to the parent
     decks.appendChild(list)
 }
 
+
 const listOfCards = [].slice.call(decks.children);
-console.log('listr', listOfCards)
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -90,6 +89,7 @@ console.log('listr', listOfCards)
  */
 
 //EVENT LISTENERS
+
 
 // click event listener to reset the game 
 restartButton.addEventListener('click', restartGame);
@@ -277,10 +277,12 @@ document.getElementsByClassName('matching-icons').disabled = true;
 function showModal() {
 
     modalHours.textContent = hours > 0 ? `${hours} hours, ` : '';
+    
     modalMinutes.textContent = minutes > 0 ? `${minutes} minutes, ` : '';
     modalSeconds.textContent = `${seconds} seconds`;
     modalMoves.textContent = `${moves} moves`;
     modalRatings.textContent = rating;
+    // console.log('sec', seconds, minutes, hours)
     modal.style.display = 'block';
 }
 
@@ -296,15 +298,15 @@ function resetCards() {
     matchedCards = [];
     cards = shuffle(cards);
     listOfCards.forEach((listOfCard, index) => {
-        console.log('listOfCard', listOfCard)
         // remove the classes from the already opened cards
         listOfCard.classList.remove('open', 'show', 'matching-icons');
         // Remove symbols
-        removeClassByPrefix(listOfCard.children[0], '');
+        removeClassByPrefix(listOfCard.children[0], 'fa ');
 
         // Attach new icons to cards
-        const icon = `${cards[index]}`;
-        console.log('icon', icon)
-        listOfCard.children[0].classList.add(icon);
+        listOfCard.children[0].className= `fa ${cards[index]}`;
+        // const icon = `${cards[index]}`;
+        // listOfCard.children[0].classList.add(icon);
+       
     });    
 }
