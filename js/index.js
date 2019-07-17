@@ -3,9 +3,10 @@
  */
 
 let cards = ['fa-anchor', 'fa-anchor', 'fa-anchor', 'fa-bolt',
- 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 
- 'fa-bolt', 'fa-bomb', 'fa-leaf', 'fa-bomb', 
- 'fa-bolt', 'fa-bicycle', 'fa-bolt', 'fa-cube'];
+    'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle',
+    'fa-bolt', 'fa-bomb', 'fa-leaf', 'fa-bomb',
+    'fa-bolt', 'fa-bicycle', 'fa-bolt', 'fa-cube'
+];
 
 /*
  * Display the cards on the page
@@ -17,7 +18,8 @@ let cards = ['fa-anchor', 'fa-anchor', 'fa-anchor', 'fa-bolt',
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(cards) {
-    var currentIndex = cards.length, temporaryValue, randomIndex;
+    var currentIndex = cards.length,
+        temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -64,12 +66,11 @@ let rating = 3;
 let match = 0;
 
 // create the  cards on the body
-for (let i =0; i < cards.length; i++) {
+for (let i = 0; i < cards.length; i++) {
     let list = document.querySelector('.card');
     let card = document.querySelector('.fa');
-    card.className= `fa ${cards[i]}`;
+    card.className = `fa ${cards[i]}`;
     list.appendChild(card);
-   
     list.addEventListener('click', openCard); //click event listener on the card befor appending to the parent
     decks.appendChild(list)
 }
@@ -97,24 +98,17 @@ restartButton.addEventListener('click', restartGame);
 closeModal.addEventListener('click', closedModal);
 
 //click event to restart the game 
-restartModal.addEventListener('click', restartGame)
+restartModal.addEventListener('click', restartGame);
+
+
 //GAME LOGIC HERE 
 
-
-// restartGame()
-
-//functions
-
-// function to pause the game 
-// function pauseGame() {
-//     stopTimer()
-// }
 
 function restartGame() {
     // set the moves count back to zero
     //set the timmer back to zero
     // unshuffle the cards back to normal
-    
+
     closedModal();
     stopTimer();
     resetsMoves();
@@ -126,18 +120,23 @@ function openCard(e) {
     //when a card is clicked, it should show the icon 
     //increase the move of the card
     startTimer();
+    increaseMove();
     let target = e.target;
-   const parent = target.parentElement;
-   if (parent.classList.contains('card')) {
-    target = parent;
+    const parent = target.parentElement;
+    if (parent.classList.contains('card')) {
+        target = parent;
+    }
+
+    if (!openedCards.includes(target)) {
+        target.classList.add('open', 'show');
+        openedCards.push(target);
+        checkMatchedCards();
+    }
 }
 
-if (!openedCards.includes(target)) {
-    target.classList.add('open', 'show');
-    openedCards.push(target);
-    checkMatchedCards();
-}
-    increaseMove();
+function increaseTimer() {
+    timeTaken++;
+    setTime(timeTaken);
 }
 
 function startTimer() {
@@ -145,7 +144,7 @@ function startTimer() {
 
     if (!startGame) {
         startGame = true;
-        timer = setInterval(setTime, 1000);
+        timer = setInterval(increaseTimer, 1000);
     }
 }
 
@@ -156,14 +155,14 @@ function stopTimer() {
     clearInterval(timer);
 }
 
-function setTime() {
-    let secondsTime = ++timeTaken;
-    hour = parseInt(secondsTime / 3600);
-    timeHours.textContent = stringifyTime(hour);
-    minute = parseInt(secondsTime / 60);
-    timeMinutes.textContent = stringifyTime(minute);
-    second = parseInt(secondsTime % 60);
-    timeSeconds.textContent = stringifyTime(second);
+function setTime(timeTaken) {
+    let secondsTime = timeTaken;
+    hours = parseInt(secondsTime / 3600);
+    timeHours.textContent = stringifyTime(hours);
+    minutes = parseInt(secondsTime / 60);
+    timeMinutes.textContent = stringifyTime(minutes);
+    seconds = parseInt(secondsTime % 60);
+    timeSeconds.textContent = stringifyTime(seconds);
 }
 
 function stringifyTime(val) {
@@ -175,9 +174,9 @@ function increaseMove() {
     moves++;
     moveCount.innerText = moves;
     if (moves === 1) {
-        moveText.innerText = 'move'
+        moveText.innerText = 'move';
     } else {
-        moveText.innerText = 'moves'
+        moveText.innerText = 'moves';
     }
     ratingStars();
 }
@@ -193,7 +192,7 @@ function resetsMoves() {
     // stars.forEach(star => removeClassByPrefix(star, 'empty-star'));
     moveCount.innerText = moves;
     stars.forEach(star => {
-        removeClassByPrefix(star, 'empty-star')
+        removeClassByPrefix(star, 'empty-star');
     });
     hours = 0;
     minutes = 0;
@@ -230,64 +229,66 @@ function checkMatchedCards() {
     //check if the class names are equal, if they are run cardMatched, if not run cardClosed
 
     let cardLength = openedCards.length;
-    if(cardLength === 2){
+    if (cardLength === 2) {
         let firstCard = openedCards[0];
-        let secondCard = openedCards[1]; 
+        let secondCard = openedCards[1];
         let firstClassName = firstCard.children[0].classList.toString();
         let secondClassName = secondCard.children[0].classList.toString();
-if (firstClassName === secondClassName ){
-    increaseMatch();
-    cardMatched(firstCard);
-    cardMatched(secondCard);
-} else  {
-    notMatched(firstCard);
-    notMatched(secondCard);
+        if (firstClassName === secondClassName) {
+            increaseMatch();
+            cardMatched(firstCard);
+            cardMatched(secondCard);
+        } else {
+            notMatched(firstCard);
+            notMatched(secondCard);
+        }
+        openedCards = [];
+        gameWon();
+    }
 }
-openedCards = [];
-gameWon();
-}
-} 
 
 function gameWon() {
-    if (match === 8){
+    if (match === 8) {
         stopTimer();
         showModal();
     }
 }
+
 function notMatched(card) {
     // card should show red
     setTimeout(() => {
         card.classList.remove('open', 'show');
     }, 500)
     //  card.classList.add('non-matching-icons');
+
 }
 
 function increaseMatch() {
     match++;
 }
+
 function cardMatched(card) {
     //cards should flip
     //cards should show green 
-card.classList.add('matching-icons');
-document.getElementsByClassName('matching-icons').disabled = true;
+    card.classList.add('matching-icons', 'rubberBand');
+    document.getElementsByClassName('matching-icons').disabled = true;
 
 }
 
 function showModal() {
 
-    modalHours.textContent = hours > 0 ? `${hours} hours, ` : '';
-    
-    modalMinutes.textContent = minutes > 0 ? `${minutes} minutes, ` : '';
-    modalSeconds.textContent = seconds;
-    modalMoves.textContent = moves;
+    modalHours.textContent = hours > 0 ? (hours === 1 ? `${hours} hour, ` : `${hours} hours, `) : `${hours} hour, `;
+
+    modalMinutes.textContent = minutes > 0 ? (minutes === 1 ? `${minutes} minute, ` : `${minutes} minutes, `) : `${minutes} minutes, `;
+    modalSeconds.textContent = `${seconds} seconds`;
+    modalMoves.textContent = `${moves} moves`;
     modalRatings.textContent = rating;
-    console.log('secondas', seconds)
     modal.style.display = 'block';
 }
 
 function closedModal() {
     modal.style.display = 'none';
-} 
+}
 
 function resetCards() {
     //clear the opened cards array 
@@ -303,9 +304,6 @@ function resetCards() {
         removeClassByPrefix(listOfCard.children[0], 'fa ');
 
         // Attach new icons to cards
-        listOfCard.children[0].className= `fa ${cards[index]}`;
-        // const icon = `${cards[index]}`;
-        // listOfCard.children[0].classList.add(icon);
-       
-    });    
+        listOfCard.children[0].className = `fa ${cards[index]}`;
+    });
 }
