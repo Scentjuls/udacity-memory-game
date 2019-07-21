@@ -189,7 +189,6 @@ function resetsMoves() {
     // rating = 3;
     moves = 0;
     match = 0;
-    // stars.forEach(star => removeClassByPrefix(star, 'empty-star'));
     moveCount.innerText = moves;
     stars.forEach(star => {
         removeClassByPrefix(star, 'empty-star');
@@ -198,9 +197,9 @@ function resetsMoves() {
     minutes = 0;
     seconds = 0;
     timeTaken = 0;
-    timeHours.innerText = "00:";
-    timeMinutes.innerText = "00:";
-    timeSeconds.innerText = "00";
+    timeHours.textContent = "00:";
+    timeMinutes.textContent = "00:";
+    timeSeconds.textContent = "00";
 }
 
 function ratingStars() {
