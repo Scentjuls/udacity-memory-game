@@ -215,10 +215,10 @@ function ratingStars() {
     }
 }
 
-function removeClassByPrefix(el, prefix, replace = '') {
+function removeClassByPrefix(element, prefix, replace = '') {
     var regx = new RegExp('\\b' + prefix + '(.*)?\\b', 'g');
-    el.className = el.className.replace(regx, replace);
-    return el;
+    element.className = element.className.replace(regx, replace);
+    return element;
 }
 
 function checkMatchedCards() {
