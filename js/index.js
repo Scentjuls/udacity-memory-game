@@ -36,10 +36,7 @@ function shuffle(cards) {
 let moves = 0;
 let starRating = document.querySelectorAll('.stars');
 let moveCount = document.querySelector('.moves-count');
-let moveText = document.querySelector('.moves-text');
-let timeHours = document.querySelector('.hours');
-let timeMinutes = document.querySelector('.minutes');
-let timeSeconds = document.querySelector('.seconds');
+let moveText = document.querySelector('.moves-text');;
 let restartButton = document.querySelector('.fa-redo-alt');
 let decks = document.querySelector('.decks');
 let stars = document.querySelectorAll('.star');
@@ -51,6 +48,7 @@ let modalRatings = document.querySelector('.modal-rating');
 let modal = document.querySelector('#modal');
 let closeModal = document.querySelector('.modal-close-btn');
 let restartModal = document.querySelector('.modal-replay-btn');
+let timeHolder = document.querySelector('.time-holder');
 
 let openedCards = [];
 let matchedCards = [];
@@ -155,15 +153,16 @@ function stopTimer() {
     clearInterval(timer);
 }
 
-function setTime(timeTaken) {
-    let secondsTime = timeTaken;
-    hours = parseInt(secondsTime / 3600);
-    timeHours.textContent = stringifyTime(hours);
-    minutes = parseInt(secondsTime / 60);
-    timeMinutes.textContent = stringifyTime(minutes);
-    seconds = parseInt(secondsTime % 60);
-    timeSeconds.textContent = stringifyTime(seconds);
-}
+function setTime(timeTaken) { 
+    let secondsTime = timeTaken; 
+    hours = parseInt(secondsTime / 3600); 
+    const displayHours = stringifyTime(hours);
+    minutes = parseInt(secondsTime / 60); 
+    const displayMinutes = stringifyTime(minutes); 
+    seconds = parseInt(secondsTime % 60); 
+    const displaySeconds = stringifyTime(seconds);
+    timeHolder.innerHTML = `${displayHours}:${displayMinutes}:${displaySeconds}`;
+ }
 
 function stringifyTime(val) {
     var valString = val + '';
@@ -255,10 +254,10 @@ function gameWon() {
 
 function notMatched(card) {
     // card should show red
+    card.classList.add('non-matching-icons', 'heartBeat')
     setTimeout(() => {
-        card.classList.remove('open', 'show');
-    }, 500)
-    //  card.classList.add('non-matching-icons');
+        card.classList.remove('open', 'show', 'non-matching-icons');
+    }, 1000);
 
 }
 
