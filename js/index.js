@@ -196,9 +196,7 @@ function resetsMoves() {
     minutes = 0;
     seconds = 0;
     timeTaken = 0;
-    timeHours.textContent = "00:";
-    timeMinutes.textContent = "00:";
-    timeSeconds.textContent = "00";
+    timeHolder.textContent = '00:00:00';
 }
 
 function ratingStars() {
